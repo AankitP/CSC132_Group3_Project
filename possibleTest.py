@@ -1,0 +1,4 @@
+def trial:
+    pass
+
+trial()
