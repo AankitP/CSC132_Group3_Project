@@ -10,6 +10,9 @@ git commit -m "descriptive message of your changes"
 git push origin master *publish to git repository*
 git pull *pulls files from online repository, do every time you start working*
 
+git checkout <branch name>                  *opens branch*
+	     -b            "name of branch" *makes a new branch*
+
 steps when working on a project
 1. git pull
 2. work
