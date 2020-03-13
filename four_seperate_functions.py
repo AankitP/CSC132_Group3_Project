@@ -3,9 +3,8 @@ def Ryan:
 def banana:
   print ("banana") * 180
 def Aankit:
-  print("c = g") *1800000
+  print("c = g") *18
 def anky:
-  pass
 def Brianna:
     for i in range 100:
       print(i)
