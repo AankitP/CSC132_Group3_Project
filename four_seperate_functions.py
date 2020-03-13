@@ -2,7 +2,7 @@ def one:
   print "hello"
 
 def two:
-  pass
+  print "corona closes school"
 def three:
   pass
 def four:
