@@ -5,7 +5,15 @@ git status *status of git directory*
 git add <file> *adds the file to the tracked list*
 	-a     *adds all files to tracked list*
 	*      
-git commit
+git commit -m "descriptive message of your changes"
 
 git push origin master *publish to git repository*
 git pull *pulls files from online repository, do every time you start working*
+
+steps when working on a project
+1. git pull
+2. work
+3. git status
+4. git add <file>
+5. git commit -m "message"
+6. git push origin master
