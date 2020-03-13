@@ -3,7 +3,7 @@ ls *lists not hidden files in the folder*
 cd <folder path> *opens folder specified in path*
 git status *status of git directory*
 git add <file> *adds the file to the tracked list*
-	-a     *adds all files to tracked list*
+	-A     *adds all files to tracked list*
 	*      
 git commit -m "descriptive message of your changes"
 
