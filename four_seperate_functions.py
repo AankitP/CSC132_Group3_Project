@@ -1,5 +1,6 @@
 def one:
   print "hello"
+
 def two:
   pass
 def three:
