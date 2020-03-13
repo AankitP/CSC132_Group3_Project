@@ -1,0 +1,11 @@
+git clone <address> *clones the items from a repo, the link of the repo will be put into the address place*
+ls *lists not hidden files in the folder*
+cd <folder path> *opens folder specified in path*
+git status *status of git directory*
+git add <file> *adds the file to the tracked list*
+	-a     *adds all files to tracked list*
+	*      
+git commit
+
+git push origin master *publish to git repository*
+git pull *pulls files from online repository, do every time you start working*
