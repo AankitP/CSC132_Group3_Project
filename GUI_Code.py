@@ -1,7 +1,8 @@
 from Tkinter import*
 from math import*
 import RPi.GPIO as GPIO
-from time import sleep
+import time
+import serial
 
 #############################################################################################################################################################
 #functions for heater and thermometer
@@ -20,8 +21,18 @@ def turnOff():
           pass
 
 def readArduino():
-          #reads Arduino
-          pass
+#reads Arduino
+          ser = serial.Serial(
+                    port = '/dev/ttyACM0',
+                    baudrate = 9600,
+                    parity = serial.PARITY_NONE,
+                    stopbits = serial.STOPBITS_ONE,
+                    bytesize=serial.EIGHTBITS,
+                    timeout=1
+          )
+
+          counter = 0
+          return ser.readline()
 
 def findTemp():
           #uses analog val from Arduino to
@@ -45,7 +56,8 @@ while(true):
           if (i == 0):
                     wantedTemp = raw_input("What temperature do you want your coffee to be set at?")
                     i++
-         Decide_on_or_off(actual_Temp, wantedTemp) 
+         Decide_on_or_off(actual_Temp, wantedTemp)
+         
                     
           
 
