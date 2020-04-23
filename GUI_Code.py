@@ -1,20 +1,22 @@
 from Tkinter import*
+from math import*
+import RPi.GPIO as GPIO
+from time import sleep
 
 #############################################################################################################################################################
 #functions for heater and thermometer
 
-
-
-def start_and_end_temp_control():
-          #used to turn on/off temperature control
-          pass
+Relay = 17
+GPIO.setup(Relay, GPIO.OUT)
 
 def turnOn():
-          #turns the Heater on
+          #send voltage out GPIO pin ___ to trigger relay
+          GPIO.output(Relay, True)
           pass
 
 def turnOff():
-          #turns the heater off
+          #cuts voltage to GPIO pin ____ to untrigger relay
+          GPIO.output(Relay, False)
           pass
 
 def readArduino():
@@ -24,15 +26,29 @@ def readArduino():
 def findTemp():
           #uses analog val from Arduino to
           #calculate the temperature
-          analogVal = 0 #this value is taken from the arduino Serial monitor
-          finalTemp = 0  #replace "0" with the calibration equation ex.  finalTemp = analogVal*4+225
-          #return finalTemp
+          analogVal = readArduino() #this value is taken from the arduino Serial monitor
+          Temp = 15.108 * math.exp(0.0032*AnalogVal)   #convert the analog value to temperature value
+          #return temperature
+          return Temp
+          
 
-def Decide_on_or_off(temperature, wantedTemp):
-          if (temp > wantedTemp+5):
+def Decide_on_or_off(temp, wantedTemp):
+          if (temp >= wantedTemp):
                     turnOff()
           elif(temp < wantedTemp-5):
                     turnOn()
+
+#main loop
+while(true):
+          actual_Temp = findTemp()
+          i = 0
+          if (i == 0):
+                    wantedTemp = raw_input("What temperature do you want your coffee to be set at?")
+                    i++
+         Decide_on_or_off(actual_Temp, wantedTemp) 
+                    
+          
+
 
 #############################################################################################################################################################
 #GUI
@@ -44,7 +60,7 @@ class Application(Frame):
                     self.button3 = Button(master, fg = "red")# command = decrease_set_temp())
                               
 
-
+################################################################################
 
 
 WIDTH = 1080
