@@ -22,6 +22,9 @@ def turnOff():
 
 def readArduino():
 #reads Arduino
+          #port is the serial port that the serial monitor is read from, this may be different
+          #in your system, to find, open serial monitor from the arduino IDE
+          #look at the tab in the taskbar, and the name of that is what you put instead of ACM0
           ser = serial.Serial(
                     port = '/dev/ttyACM0',
                     baudrate = 9600,
