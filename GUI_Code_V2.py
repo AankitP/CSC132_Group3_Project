@@ -117,7 +117,7 @@ class App(Frame):
         self.Label7 = Label(master, text="Red - Off", font=(font_, 20, 'bold italic'))
         self.Label7.grid(row=11, column=1)
 
-        self.Master_Switch = Button(master, text='', background=self.Button_Color, command = Button_press())  # Green: #00FF00      Red: #ff0000
+        self.Master_Switch = Button(master, text='', borderwidth = 0, highlightthickness=0, background=self.Button_Color, command = Button_press())  # Green: #00FF00      Red: #ff0000
         self.Master_Switch.grid(row=9, column=2, rowspan=6, columnspan=2, sticky=N + S + W + E)
 
         #used to format the set temp into the correct position
