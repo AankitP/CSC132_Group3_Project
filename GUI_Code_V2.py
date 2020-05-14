@@ -6,25 +6,31 @@ import time
 
 # import serial
 
+# Use this to change the font to whatever you like
+##########################################################################################
+#Variables
+font_ = 'Comic Sans MS'
+x = 1
+status = 'idle'
+temp = 75
+current_temp = 0
+relay_Status = "off"
+temp_Status = "not set"
+Relay = 17
 #############################################################################################################################################################
 # functions for heater and thermometer
-
-Relay = 17
-
 
 # GPIO.setup(Relay, GPIO.OUT)
 
 def turnOn():
     # send voltage out GPIO pin ___ to trigger relay
-    #          GPIO.output(Relay, True)
-    App.relay_Status = "on"
+    #GPIO.output(Relay, True)
     pass
 
 
 def turnOff():
     # cuts voltage to GPIO pin ____ to untrigger relay
-    #          GPIO.output(Relay, False)
-    App.relay_Status = "off"
+    #GPIO.output(Relay, False)
     pass
 
 
@@ -52,165 +58,112 @@ def findTemp():
     analogVal = readArduino()  # this value is taken from the arduino Serial monitor
     Temp = 15.108 * math.exp(0.0032 * AnalogVal)  # convert the analog value to temperature value
     # return temperature
-    App.temp = Temp
+    Label2['text'] = Temp
     return Temp
-
-def Button_press():
-    if(App.Button_Color == "Green"):
-        App.Button_Color = "red"
-    else:
-        App.Button_Color = "Green"
 
 
 def Decide_on_or_off(temp, wantedTemp):
-    if (temp >= wantedTemp):
-        turnOff()
-    elif (temp < wantedTemp - 5):
-        turnOn()
+    if(Switch['bg'] == "Green"):
+        if (temp >= wantedTemp):
+            turnOff()
+            Label10['text'] = "Relay status - off"
+        elif (temp < wantedTemp - 5):
+            turnOn()
+            Label10['text'] = "Relay status - off"
 
-
-
-##########################################################################################
-
-#Use this to change the font to whatever you like
-font_ = 'Comic Sans MS'
 
 ##########################################################################################
 # GUI
-class App(Frame):
-    def __init__(self, master, Button_Color, status, relay_Status, temp_Status, temp):
-        self.Button_Color = 'Red'
-        self.status = "idle"
-        self.relay_Status = "off"
-        self.temp_Status = "not set"
-        self.temp = 75
+def button_color():
+    global x
+    global temp_Status
+    if (x == 1):
+        Switch['bg'] = 'Green'
+        Label11['text'] = "temp status - set"
+        # self.button = 'Green'
+        x = x - 1
+    else:
+        Switch['bg'] = 'Red'
+        Label11['text'] = "temp status - not set"
+        # self.button = 'Red'
+        x = x + 1
+
+def increase_temp():
+    global temp
+    if (temp < 200):
+        temp = temp + 5
+        Label9['text'] = temp
+    else:
+        Label9['text'] = temp
+
+def decrease_temp():
+    global temp
+    if (temp > 75):
+        temp = temp - 5
+        Label9['text'] = temp
+    else:
+        Label9['text'] = temp
 
 
-        Frame.__init__(self, master)
+Label0 = Label( text="\n", font=(font_, 5, 'bold italic'))
+Label0.grid(row=2, column=1)
 
-        #used for plcing the actual temp text and switch text
-        self.Label0 = Label(master, text="\n", font=(font_, 5, 'bold italic'))
-        self.Label0.grid(row=2, column=1)
+Label1 = Label( text="Actual Temperature", font=(font_, 30, 'bold italic'))
+Label1.grid(row=3, column=1)
 
-        self.Label1 = Label(master, text=" Actual Temperature", font=(font_, 30, 'bold italic'))
-        self.Label1.grid(row=3, column=1)
+Label2 = Label( text="75", font=(font_, 40, 'bold italic'))
+Label2.grid(row=4, column=1)
 
-        self.Label2 = Label(master, text="75", font=(font_, 40, 'bold italic'))
-        self.Label2.grid(row=4, column=1)
+Label3 = Label( text="Status - {}".format(status), font=(font_, 20, 'bold italic'))
+Label3.grid(row=6, column=1)
 
-        self.Label3 = Label(master, text="Status - {}".format(self.status), font=(font_, 20, 'bold italic'))
-        self.Label3.grid(row=6, column=1)
+# used for seperating the Actual temp and switch text
+Label3_5 = Label( text="\n\n ", font=(font_, 10, 'bold italic'))
+Label3_5.grid(row=7, column=1)
 
-        #used for seperating the Actual temp and master switch text
-        self.Label3_5 = Label(master, text="\n\n ", font=(font_, 10, 'bold italic'))
-        self.Label3_5.grid(row=7, column=1)
+Label4 = Label( text="Switch", font=(font_, 20, 'bold italic'))
+Label4.grid(row=8, column=1)
 
-        self.Label4 = Label(master, text="Master Switch", font=(font_, 20, 'bold italic'))
-        self.Label4.grid(row=8, column=1)
+Label5 = Label( text="Tap to activate", font=(font_, 20, 'bold italic'))
+Label5.grid(row=9, column=1)
 
-        self.Label5 = Label(master, text="Tap to activate", font=(font_, 20, 'bold italic'))
-        self.Label5.grid(row=9, column=1)
+Label6 = Label( text="Green - On", font=(font_, 20, 'bold italic'))
+Label6.grid(row=10, column=1)
 
-        self.Label6 = Label(master, text="Green - On", font=(font_, 20, 'bold italic'))
-        self.Label6.grid(row=10, column=1)
-
-        self.Label7 = Label(master, text="Red - Off", font=(font_, 20, 'bold italic'))
-        self.Label7.grid(row=11, column=1)
-
-        self.Master_Switch = Button(master, text='', borderwidth = 0, highlightthickness=0, background=self.Button_Color, command = Button_press())  # Green: #00FF00      Red: #ff0000
-        self.Master_Switch.grid(row=9, column=2, rowspan=6, columnspan=2, sticky=N + S + W + E)
-
-        #used to format the set temp into the correct position
-        self.Label7_5 = Label(master, text="\t", font=(font_, 15, 'bold italic'))
-        self.Label7_5.grid(row=3, column=2)
+Label7 = Label( text="Red - Off", font=(font_, 20, 'bold italic'))
+Label7.grid(row=11, column=1)
 
 
-        self.Label8 = Label(master, text="Set Temp", font=(font_, 30, 'bold italic'))
-        self.Label8.grid(row=3, column=5)
+Switch = Button( text='', borderwidth=0, highlightthickness=0, background='Red', command= button_color)  # Green: #00FF00      Red: #ff0000
+Switch.grid(row=9, column=2, rowspan=7, columnspan=1, sticky=N + S + W + E )
 
-        #put a variable where 100 is so that you can change it by pressing the buttons
-        self.Label9 = Label(master, text=self.temp, font=(font_, 30, 'bold italic'))
-        self.Label9.grid(row=4, column=5)
+# used to format the set temp into the correct position
+Label7_5 = Label( text="\t", font=(font_, 15, 'bold italic'))
+Label7_5.grid(row=3, column=2)
 
-        #used for seperating the set temp and statuses
-        #self.Label9_5 = Label(master, text="\n\n ", font=(font_, 20, 'bold italic'))
-        #self.Label9_5.grid(row=5, column=4)
+Label8 = Label( text="Set Temp", font=(font_, 30, 'bold italic'))
+Label8.grid(row=3, column=5)
 
-        #put a .format in the text portion with a variable to change the status
-        self.Label10 = Label(master, text="Relay status - {}".format(self.relay_Status), font=(font_, 10, 'bold italic'))
-        self.Label10.grid(row=8, column=5)
+#buttons to adjust temperature value
+Adjuster1 = Button(text='Decrease', borderwidth=0, highlightthickness=0, background='Red', activebackground = "blue", command = decrease_temp)
+Adjuster1.grid(row = 4, column = 4)
 
-        self.Label11 = Label(master, text="Temp status - {}".format(self.temp_Status), font=(font_, 10, 'bold italic'))
-        self.Label11.grid(row=10, column=5)
-
-    # def initUI(self):
-    #     self.master.title("Lines")
-    #     self.pack(fill=BOTH, expand=1)
-    #
-    #     canvas = Canvas(self)
-    #     canvas.create_rectangle(533, 240, 533, -240, outline = "000000", fill = "000000", width = 1)
-    #     canvas.create_line(300, 35, 300, 200, dash=(4, 2))
-    #     canvas.create_line(55, 85, 155, 85, 105, 180, 55, 85)
-    #
-    #     canvas.pack(fill=BOTH, expand=1)
-
-    @property
-    def status(self):
-        return self._status
-
-    @status.setter
-    def status(self, value):
-        self._status = value
-
-    @property
-    def Button_Color(self):
-        return self._Button_Color
-
-    @Button_Color.setter
-    def Button_Color(self, value):
-        self._Button_Color = value
-
-    @property
-    def relay_Status(self):
-        return self._relay_Status
-
-    @relay_Status.setter
-    def relay_Status(self, value):
-        self._relay_Status = value
-
-    @property
-    def temp_Status(self):
-        return self._temp_Status
-
-    @temp_Status.setter
-    def temp_Status(self, value):
-        self._temp_Status = value
-
-    @property
-    def temp(self):
-        return self._temp
-
-    @temp.setter
-    def temp(self, value):
-        self._temp = value
+Adjuster2 = Button(text='Increase', borderwidth=0, highlightthickness=0, background='Green', activebackground = "blue", command = increase_temp)
+Adjuster2.grid(row = 4, column = 6)
 
 
-    def say(self):
-        print("something")
+# put a variable where 100 is so that you can change it by pressing the buttons
+Label9 = Label( text=temp, font=(font_, 30, 'bold italic'))
+Label9.grid(row=4, column=5)
 
-    #def get_Status(self):
-    #    return self.status_
-    #def set_Status(self):
-    #    self.status_ = "off"
-    #    return self.status_
+# used for seperating the set temp and statuses
+# Label9_5 = Label( text="\n\n ", font=(font_, 20, 'bold italic'))
+# Label9_5.grid(row=5, column=4)
 
+# put a .format in the text portion with a variable to change the status
+Label10 = Label( text="Relay status - {}".format(relay_Status), font=(font_, 10, 'bold italic'))
+Label10.grid(row=8, column=5)
 
-
-WIDTH = 800
-HEIGHT = 800
-
-window = Tk()
-window.geometry("800x480")
-app = App(window, 'Green', 'idle', 'off', 'not set',0)
-
-window.mainloop()
+Label11 = Label( text="Temp status - {}".format(temp_Status), font=(font_, 10, 'bold italic'))
+Label11.grid(row=10, column=5)
+mainloop()
